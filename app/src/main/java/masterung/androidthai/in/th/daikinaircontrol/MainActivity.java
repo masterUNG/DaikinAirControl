@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import masterung.androidthai.in.th.daikinaircontrol.fragment.ControlFragment;
+import masterung.androidthai.in.th.daikinaircontrol.fragment.ListAirFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
 
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.contentMainFragment, new ControlFragment()).commit();
+                    .add(R.id.contentMainFragment, new ListAirFragment()).commit();
 
         }
 
