@@ -12,23 +12,55 @@ import android.view.ViewGroup;
 
 import masterung.androidthai.in.th.daikinaircontrol.R;
 
-public class ControlFragment extends Fragment{
+public class ControlFragment extends Fragment {
 
     //    Explicit
     private int powerAnInt = 0;
     private String urlAir = "http://192.168.1.108/aircon/set_control_info?";
     private String prePower = "pow=";
+    private String idString, nameString, ipAddressString, macAddressString;
+
+    public static ControlFragment controlInstance(String idString,
+                                                  String nameString,
+                                                  String ipAddressString,
+                                                  String macAddressString) {
+
+        ControlFragment controlFragment = new ControlFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("id", idString);
+        bundle.putString("Name", nameString);
+        bundle.putString("IpAddress", ipAddressString);
+        bundle.putString("MacAddress", macAddressString);
+        controlFragment.setArguments(bundle);
+        return controlFragment;
+
+    }
 
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+//        GetValue Argument
+        getValueArgument();
+
 //        OnOff Controller
         onOffController();
 
 
     }   // Main Method
+
+    private void getValueArgument() {
+        idString = getArguments().getString("id");
+        nameString = getArguments().getString("Name");
+        ipAddressString = getArguments().getString("IpAddress");
+        macAddressString = getArguments().getString("MacAddress");
+
+        Log.d("23MayV1", "id ==> " + idString);
+        Log.d("23MayV1", "Name ==> " + nameString);
+        Log.d("23MayV1", "IpAddress ==> " + ipAddressString);
+        Log.d("23MayV1", "MacAddress ==> " + macAddressString);
+    }
 
     private void onOffController() {
 
