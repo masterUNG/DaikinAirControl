@@ -1,3 +1,9 @@
 <resources>
+
+    <!--Name of Applicatin-->
     <string name="app_name">Daikin Air Control</string>
+
+
+
+
 </resources>
