@@ -16,6 +16,7 @@ import android.widget.EditText;
 import masterung.androidthai.in.th.daikinaircontrol.MainActivity;
 import masterung.androidthai.in.th.daikinaircontrol.R;
 import masterung.androidthai.in.th.daikinaircontrol.utility.MyAlert;
+import masterung.androidthai.in.th.daikinaircontrol.utility.MyManage;
 
 public class AddAirFragment extends Fragment {
 
@@ -60,6 +61,9 @@ public class AddAirFragment extends Fragment {
         } else {
 
 //            No Space
+            MyManage myManage = new MyManage(getActivity());
+            myManage.addValue(nameString, ipAddressString, macAddressString);
+            getActivity().getSupportFragmentManager().popBackStack();
 
         }
 
