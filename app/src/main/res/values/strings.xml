@@ -5,6 +5,7 @@
 
     <string name="th_have_space">มีช่องว่าง</string>
     <string name="th_message_have_space">กรุณากรอกทุกช่องซิคะ</string>
+    <string name="unit_temp"> ํc</string>
 
 
 </resources>
