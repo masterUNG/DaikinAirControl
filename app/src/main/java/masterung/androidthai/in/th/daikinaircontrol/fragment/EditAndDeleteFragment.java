@@ -80,7 +80,7 @@ public class EditAndDeleteFragment extends Fragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setCancelable(false);
-        builder.setIcon(R.drawable.ic_action_delete);
+        builder.setIcon(R.drawable.ic_action_name);
         builder.setTitle("Confirm Delete");
         builder.setMessage("Do You Want to Delete Item ?");
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -97,11 +97,20 @@ public class EditAndDeleteFragment extends Fragment {
                         .openOrCreateDatabase(MyOpenHelper.nameDatabaseSTRING,
                                 Context.MODE_PRIVATE, null);
                 sqLiteDatabase.delete("airTABLE",
-                        "id" + idString, null);
+                        "id" + "=" + idString, null);
 
+                getActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.contentMainFragment, new ListAirFragment())
+                        .commit();
 
-            }
+                dialog.dismiss();
+
+            }   // onClick
         });
+
+        builder.show();
 
 
 
