@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -36,6 +37,8 @@ public class ControlFragment extends Fragment {
     private String contentIOTString, powString, modeString, stempString, f_rateString, f_dirString;
 
     private SwitchCompat aSwitch;
+    private TextView textView;
+    private String[] modeStrings = new String[]{"FAN", "Cool", "DRY"};
 
 
     public static ControlFragment controlInstance(String idString,
@@ -72,10 +75,51 @@ public class ControlFragment extends Fragment {
 //        OnOff Controller
         onOffController();
 
+//        Fan Contrller
+        fanContrller();
 
+//        Cool Controller
+        coolController();
 
 
     }   // Main Method
+
+    private void coolController() {
+        ImageView imageView = getView().findViewById(R.id.imvCool);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                MyConstant myConstant = new MyConstant();
+                String urlString = "http://" + ipAddressString +
+                        myConstant.getUrlSetModeString() + "1";
+                Log.d("24MayV5", "urlMode ==> " + urlString);
+                textView.setText(modeStrings[1]);
+
+                myThreadIOT(urlString);
+
+            }
+        });
+
+    }
+
+    private void fanContrller() {
+        ImageView imageView = getView().findViewById(R.id.imvFan);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                MyConstant myConstant = new MyConstant();
+                String urlString = "http://" + ipAddressString +
+                        myConstant.getUrlSetModeString() + "0";
+                Log.d("24MayV5", "urlMode ==> " + urlString);
+                textView.setText(modeStrings[0]);
+
+                myThreadIOT(urlString);
+
+            }
+        });
+    }   // fan
 
     private void fanRateController() {
 
@@ -153,8 +197,8 @@ public class ControlFragment extends Fragment {
             }
 
 //            Show Mode
-            String[] modeStrings = new String[]{"FAN", "Cool", "DRY"};
-            TextView textView = getView().findViewById(R.id.txtMode);
+
+            textView = getView().findViewById(R.id.txtMode);
             textView.setText(modeStrings[Integer.parseInt(modeString.trim())]);
 
 //            FanRate Controller
