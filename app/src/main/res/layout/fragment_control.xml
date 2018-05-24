@@ -38,6 +38,8 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
+                    android:textStyle="bold"
+                    android:id="@+id/txtMode"
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="10dp"
                     android:textSize="@dimen/h2"
@@ -155,11 +157,13 @@
                 android:layout_height="wrap_content">
 
                 <Spinner
+                    android:id="@+id/spinnerRate"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
                 <Spinner
+                    android:id="@+id/spinnerDir"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
