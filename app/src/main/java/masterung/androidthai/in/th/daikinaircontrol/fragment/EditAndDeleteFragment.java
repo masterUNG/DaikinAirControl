@@ -1,5 +1,6 @@
 package masterung.androidthai.in.th.daikinaircontrol.fragment;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
@@ -7,8 +8,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,6 +22,7 @@ import android.widget.EditText;
 
 import masterung.androidthai.in.th.daikinaircontrol.MainActivity;
 import masterung.androidthai.in.th.daikinaircontrol.R;
+import masterung.androidthai.in.th.daikinaircontrol.utility.MyManage;
 import masterung.androidthai.in.th.daikinaircontrol.utility.MyOpenHelper;
 
 public class EditAndDeleteFragment extends Fragment {
@@ -68,12 +72,70 @@ public class EditAndDeleteFragment extends Fragment {
         }
 
         if (item.getItemId() == R.id.itemEdit) {
-
+            editItem();
             return true;
         }
 
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void editItem() {
+
+        nameString = nameEditText.getText().toString().trim();
+        ipAddressString = ipAddressEditText.getText().toString().trim();
+        macAddressString = macAddressEditText.getText().toString().trim();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setCancelable(false);
+        builder.setIcon(R.drawable.ic_action_name);
+        builder.setTitle("Confirm Edit");
+        builder.setMessage("Name = " + nameString + "\n" +
+                "IP Address = " + ipAddressString + "\n" +
+                "mac Address = " + macAddressString);
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                SQLiteDatabase sqLiteDatabase = getActivity()
+                        .openOrCreateDatabase(MyOpenHelper.nameDatabaseSTRING,
+                                Context.MODE_PRIVATE, null);
+
+                ContentValues contentValues = new ContentValues();
+                contentValues.put("Name", nameString);
+                contentValues.put("IpAddress", ipAddressString);
+                contentValues.put("MacAddress", macAddressString);
+
+                sqLiteDatabase.update("airTABLE", contentValues,
+                        "id" + "=" + idString, null);
+
+
+                FragmentManager fragmentManager = getFragmentManager();
+                if (fragmentManager.getBackStackEntryCount() > 0) {
+                    fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                }
+
+                getActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.contentMainFragment, new ListAirFragment())
+                        .commit();
+
+
+                dialog.dismiss();
+
+
+            }   //onClick
+        });
+        builder.show();
+
+
     }
 
     private void deleteItem() {
@@ -93,11 +155,12 @@ public class EditAndDeleteFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                SQLiteDatabase sqLiteDatabase = getActivity()
-                        .openOrCreateDatabase(MyOpenHelper.nameDatabaseSTRING,
-                                Context.MODE_PRIVATE, null);
-                sqLiteDatabase.delete("airTABLE",
-                        "id" + "=" + idString, null);
+                myDelete();
+
+                FragmentManager fragmentManager = getFragmentManager();
+                if (fragmentManager.getBackStackEntryCount() > 0) {
+                    fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                }
 
                 getActivity()
                         .getSupportFragmentManager()
@@ -113,7 +176,14 @@ public class EditAndDeleteFragment extends Fragment {
         builder.show();
 
 
+    }
 
+    private void myDelete() {
+        SQLiteDatabase sqLiteDatabase = getActivity()
+                .openOrCreateDatabase(MyOpenHelper.nameDatabaseSTRING,
+                        Context.MODE_PRIVATE, null);
+        sqLiteDatabase.delete("airTABLE",
+                "id" + "=" + idString, null);
     }
 
     @Override
@@ -163,6 +233,11 @@ public class EditAndDeleteFragment extends Fragment {
         nameString = getArguments().getString("Name");
         ipAddressString = getArguments().getString("IpAddress");
         macAddressString = getArguments().getString("MacAddress");
+
+
+        Log.d("24MayV1", "Mac on Edit ==> " + macAddressString);
+
+
     }
 
 
