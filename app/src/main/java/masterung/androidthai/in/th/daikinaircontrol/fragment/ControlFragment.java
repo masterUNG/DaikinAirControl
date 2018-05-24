@@ -64,6 +64,13 @@ public class ControlFragment extends Fragment {
 
         if (item.getItemId() == R.id.itemSetup) {
 //            To Do
+            getActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.contentMainFragment,
+                            EditAndDeleteFragment.editAndDeleteInstance(idString, nameString, ipAddressString, macAddressString))
+                    .addToBackStack(null)
+                    .commit();
 
             return true;
         }
