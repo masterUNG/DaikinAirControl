@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 
 import masterung.androidthai.in.th.daikinaircontrol.MainActivity;
 import masterung.androidthai.in.th.daikinaircontrol.R;
+import masterung.androidthai.in.th.daikinaircontrol.utility.MyConstant;
+import masterung.androidthai.in.th.daikinaircontrol.utility.PostData;
 
 public class ControlFragment extends Fragment {
 
@@ -24,6 +26,7 @@ public class ControlFragment extends Fragment {
     private String urlAir = "http://192.168.1.108/aircon/set_control_info?";
     private String prePower = "pow=";
     private String idString, nameString, ipAddressString, macAddressString;
+    private String contentIOTString, powString, modeString, stempString, f_rateString, f_dirString;
 
     public static ControlFragment controlInstance(String idString,
                                                   String nameString,
@@ -49,6 +52,9 @@ public class ControlFragment extends Fragment {
 //        GetValue Argument
         getValueArgument();
 
+//        GetData IOT
+        getDataIOT();
+
 //        Create Toolbar
         createToolbar();
 
@@ -58,6 +64,24 @@ public class ControlFragment extends Fragment {
 
 
     }   // Main Method
+
+    private void getDataIOT() {
+
+        try {
+
+            PostData postData = new PostData(getActivity());
+            postData.execute(contentIOTString);
+
+            String jsonString = postData.get();
+            Log.d("24MayV2", "json ==> " + jsonString);
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -110,6 +134,10 @@ public class ControlFragment extends Fragment {
         nameString = getArguments().getString("Name");
         ipAddressString = getArguments().getString("IpAddress");
         macAddressString = getArguments().getString("MacAddress");
+
+        MyConstant myConstant = new MyConstant();
+        contentIOTString = "http://" + ipAddressString + myConstant.getUrlInfoString();
+        Log.d("24MayV2", "contentIOT ==> " + contentIOTString);
 
         Log.d("23MayV1", "id ==> " + idString);
         Log.d("23MayV1", "Name ==> " + nameString);
